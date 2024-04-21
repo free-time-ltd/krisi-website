@@ -1,0 +1,34 @@
+query getOverview($imageLimit: Int!) {
+  navigations {
+    name
+    links {
+      name
+      title
+      link_type
+      is_external
+      is_new_window
+      link_payload
+      sort_order
+    }
+  }
+  overview(limit: $imageLimit) {
+    name
+    slug
+    url
+    images {
+      id
+      title
+      url
+      previewUrl
+      mature
+      nudity
+      violence
+      thumbnails {
+        url
+        type
+        width
+        height
+      }
+    }
+  }
+}

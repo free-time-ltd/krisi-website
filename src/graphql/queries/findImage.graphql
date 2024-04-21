@@ -1,0 +1,28 @@
+query findImage($image: String!) {
+  image(id: $image) {
+    id
+    categories {
+      name
+      slug
+    }
+    title
+    description
+    mature
+    violence
+    nudity
+    filename
+    extension
+    mimeType
+    url
+    previewUrl
+    tags {
+      name
+    }
+    thumbnails {
+      url
+      type
+      width
+      height
+    }
+  }
+}
