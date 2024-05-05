@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${Inter.variable} ${CormorantGaramondRegular.variable}`}
+      className={`${Inter.variable} ${CormorantGaramondRegular.variable} scroll-smooth`}
     >
       <body className="sm:pt-5">
         <Header />

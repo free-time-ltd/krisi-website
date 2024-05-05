@@ -15,6 +15,12 @@ const Routes = [
     href: "/gallery/portfolio",
   },
   {
+    title: "Shop",
+    href: "https://store.kristinakostova.com",
+    target: "_blank",
+    rel: "external",
+  },
+  {
     title: "Contacts",
     href: "#contacts",
   },

@@ -2,16 +2,60 @@ import { EventHandler, SyntheticEvent } from "react";
 
 type ButtonClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
-const Hamburger = ({ onClick }: { onClick?: ButtonClickHandler }) => (
+const Hamburger = ({
+  onClick,
+  toggled = false,
+}: {
+  onClick?: ButtonClickHandler;
+  toggled?: boolean;
+}) => (
   <button
     type="button"
     onClick={onClick}
-    className="flex flex-col justify-between w-6 h-5 cursor-pointer"
+    className="overflow-hidden p-1 cursor-pointer"
+    title="Navigation menu"
   >
-    {[0, 1, 2].map((idx) => (
-      <div className="w-full h-0 border-b-2 border-b-accent" key={idx} />
-    ))}
+    <span className="text-accent">
+      <svg
+        className="h-6 w-6"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M4 6h16"
+          className={lineCss(
+            toggled ? "rotate-45 -translate-x-1 translate-y-1" : ""
+          )}
+        />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M4 12h16"
+          className={lineCss(toggled ? "translate-x-full opacity-0" : "")}
+        />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M4 18h16"
+          className={lineCss(
+            toggled ? "-rotate-45 -translate-x-1 -translate-y-1" : ""
+          )}
+        />
+      </svg>
+    </span>
   </button>
 );
+
+const lineCss = (extraClasses?: string) =>
+  ["origin-center transition duration-300 ease-in-out transform", extraClasses]
+    .map((cls) => cls?.trim())
+    .filter(Boolean)
+    .join(" ");
 
 export default Hamburger;
