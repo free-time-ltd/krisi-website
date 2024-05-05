@@ -29,7 +29,7 @@ export default function RootLayout({
     >
       <body className="sm:pt-5">
         <Header />
-        <main className="app-main">{children}</main>
+        <main className="app-main overflow-hidden">{children}</main>
         <Footer />
       </body>
     </html>
