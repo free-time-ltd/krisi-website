@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <header
-      className="min-h-12 flex w-full px-4 py-4 sm:px-10 sticky top-0 z-10 bg-primary"
+      className="min-h-12 flex w-full px-4 py-4 sm:px-20 sticky top-0 z-10 bg-primary"
       ref={headerRef}
     >
       <section className="flex-1">

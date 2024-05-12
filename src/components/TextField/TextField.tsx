@@ -1,6 +1,7 @@
-import { HTMLAttributes, Ref, forwardRef } from "react";
+"use client";
+import { InputHTMLAttributes, Ref, forwardRef, useRef } from "react";
 
-interface Props extends HTMLAttributes<HTMLInputElement> {
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   type?: "text";
   label?: string;
 }
@@ -9,15 +10,13 @@ const TextField = (
   { type = "text", label, ...restProps }: Props,
   ref: Ref<HTMLInputElement>
 ) => {
-  if (!restProps.id) {
-    restProps.id = generateUniqueId();
-  }
+  const uuid = useRef(restProps.id ?? generateUniqueId());
 
   return (
-    <div className="KpTextfield-root mb-6">
+    <div className="KpTextfield-root">
       {label && (
         <label
-          htmlFor={restProps.id}
+          htmlFor={uuid.current}
           className="block mb-2 text-sm font-medium"
         >
           {label}
@@ -27,13 +26,14 @@ const TextField = (
         type={type}
         className={`bg-transparent p-2.5 border border-accent hover:border-secondary focus:rounded-none text-sm block w-full`}
         {...restProps}
+        {...(label && { id: uuid.current })}
         ref={ref}
       />
     </div>
   );
 };
 
-export default forwardRef(TextField);
+export default forwardRef<HTMLInputElement, Props>(TextField);
 
 function djb2(str: string) {
   let hash = 5381;

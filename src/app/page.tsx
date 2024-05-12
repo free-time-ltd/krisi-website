@@ -5,7 +5,6 @@ import Link, { NextLinkProps } from "@/components/Link";
 import TextField from "@/components/TextField";
 import Hero from "@/components/Hero";
 import ContactForm from "@/components/ContactForm";
-import LogoBrush from "@/components/LogoBrush";
 
 export default async function Home() {
   const { data: overviewData, error } = await getOverview();
@@ -13,8 +12,6 @@ export default async function Home() {
   if (!overviewData || error) {
     return <main>No gallery</main>;
   }
-
-  console.log({ overviewData: overviewData.overview });
 
   const TypographyTypes = [
     "h1",
@@ -43,7 +40,7 @@ export default async function Home() {
   return (
     <>
       <Hero
-        intro="Hello, I'm"
+        intro="Hello 👋, I'm"
         title="Kristina Kostova"
         subtitle="Artist specializing in painting and illustration"
         outro={`${
@@ -64,15 +61,14 @@ export default async function Home() {
           </Typography>
         </a>
       </Hero>
-      <section
-        id="contact"
-        className="KpHero-root mx-auto rounded py-16 px-8 xl:max-w-screen-xl"
-      >
+      <section className="KpHero-root mx-auto rounded py-16 px-8 xl:max-w-screen-xl">
         <article>
           <Typography variant="h5" component="h1" align="center">
             Contact me
           </Typography>
-          <ContactForm />
+          <div className="py-2">
+            <ContactForm />
+          </div>
         </article>
       </section>
       <section className="flex min-h-screen flex-col items-start lg:items-center justify-between m-4 sm:p-24">
@@ -98,33 +94,35 @@ export default async function Home() {
             </Link>
           </p>
         </div>
+        <TextField label="Cool label" placeholder="placeholder string" />
         <TextField label="Cool label" />
-        <TextField label="Cool label" />
-        {overviewData.overview.map((overview) => (
-          <div className="gallery-wrapper" key={overview?.slug}>
-            <Typography variant="h4" component="h1">
-              {overview.name}
-            </Typography>
-            <div className="grid grid-cols-1 sm:grid-cols-3">
-              {overview.images.map((image) => (
-                <div className="image" key={image?.previewUrl}>
-                  <Link href={image.previewUrl}>
-                    {image.smallestThumb && (
-                      <Image
-                        src={image.smallestThumb.url}
-                        width={image.smallestThumb.width}
-                        height={image.smallestThumb.width}
-                        alt={image.title}
-                        className="mx-auto"
-                      />
-                    )}
-                  </Link>
-                  <p className="text-center">{image.previewUrl}</p>
-                </div>
-              ))}
+        {overviewData.overview
+          .filter((overview) => overview.slug !== "slider")
+          .map((overview) => (
+            <div className="gallery-wrapper" key={overview?.slug}>
+              <Typography variant="h4" component="h1">
+                {overview.name}
+              </Typography>
+              <div className="grid grid-cols-1 sm:grid-cols-3">
+                {overview.images.map((image) => (
+                  <div className="image" key={image?.previewUrl}>
+                    <Link href={image.previewUrl}>
+                      {image.smallestThumb && (
+                        <Image
+                          src={image.smallestThumb.url}
+                          width={image.smallestThumb.width}
+                          height={image.smallestThumb.width}
+                          alt={image.title}
+                          className="mx-auto"
+                        />
+                      )}
+                    </Link>
+                    <p className="text-center">{image.previewUrl}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </section>
     </>
   );
