@@ -42,21 +42,26 @@ const NavMenuMobile = ({ routes }: { routes: RouteList }) => {
         <Hamburger toggled={isOpen} onClick={() => toggleMenu()} />
       </div>
       {isOpen &&
-        createPortal(<Backdrop onClick={() => toggleMenu()} />, document.body)}
-      <div
-        className={`menu fixed top-0 right-0 h-screen z-50 w-9/12 bg-primary flex flex-col px-5 py-12 transition ease-in-out duration-150 ${extraClasses}`}
-      >
-        <div className="close-btn absolute top-5 right-4">
-          <Hamburger toggled={isOpen} onClick={toggleMenu} />
-        </div>
-        <ul className="grid gap-4">
-          {routes.map(({ href, title }) => (
-            <NavItem href={href} key={href}>
-              {title}
-            </NavItem>
-          ))}
-        </ul>
-      </div>
+        createPortal(
+          <div className="header-menu">
+            <Backdrop onClick={() => toggleMenu()} />
+            <div
+              className={`menu fixed top-0 right-0 h-screen z-50 w-9/12 bg-primary flex flex-col px-5 py-12 transition ease-in-out duration-150 ${extraClasses}`}
+            >
+              <div className="close-btn absolute top-5 right-4">
+                <Hamburger toggled={isOpen} onClick={toggleMenu} />
+              </div>
+              <ul className="grid gap-4">
+                {routes.map(({ href, title }) => (
+                  <NavItem href={href} key={href}>
+                    {title}
+                  </NavItem>
+                ))}
+              </ul>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

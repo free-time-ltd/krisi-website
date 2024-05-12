@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "ngrok": "node ngrok.mjs"
   },
   "dependencies": {
     "@urql/next": "^1.1.1",
@@ -25,6 +26,7 @@
     "@graphql-codegen/typescript-operations": "^4.2.0",
     "@graphql-codegen/typescript-resolvers": "4.0.6",
     "@graphql-codegen/typescript-urql": "^4.0.0",
+    "@ngrok/ngrok": "^1.2.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -7,6 +7,7 @@ const buttonStyles = cva(
   {
     variants: {
       variant: {
+        accent: ["bg-accent", "hover:bg-secondary"],
         primary: ["bg-blue-700", "hover:bg-blue-600"],
         secondary: ["bg-black", "hover:bg-gray-100"],
         danger: ["bg-red-600"],
@@ -27,17 +28,30 @@ interface ButtonProps
   extends VariantProps<typeof buttonStyles>,
     Omit<HTMLAttributes<HTMLButtonElement>, "className"> {
   type?: "button" | "submit" | "reset";
+  rounded?: boolean;
   children?: ReactNode;
 }
 
 const Button = (
-  { type = "button", children, variant, size, ...restProps }: ButtonProps = {},
+  {
+    type = "button",
+    children,
+    variant,
+    size,
+    rounded,
+    ...restProps
+  }: ButtonProps = {},
   ref: Ref<HTMLButtonElement>
 ) => {
+  const classList = [buttonStyles({ variant, size })];
+  if (rounded) {
+    classList.push("rounded-full");
+  }
+
   return (
     <button
       type={type}
-      className={buttonStyles({ variant, size })}
+      className={classList.join(" ")}
       ref={ref}
       {...restProps}
     >

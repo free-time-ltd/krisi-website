@@ -53,10 +53,20 @@ const typographyStyles = cva("KpTypograhy-root", {
       right: "text-right",
       justify: "text-justify",
     },
+    color: {
+      accent: ["text-accent"],
+      primary: ["text-primary"],
+      secondary: ["text-secondary"],
+      success: ["text-success"],
+      danger: ["text-danger"],
+      info: ["text-info"],
+      inherit: [],
+    },
   },
   defaultVariants: {
     variant: "body1",
     align: "left",
+    color: "inherit",
   },
 });
 
@@ -90,6 +100,7 @@ const Typography = (
     align,
     component,
     noWrap,
+    color,
     gutterBottom = true,
     ...restProps
   }: TypographyProps,
@@ -97,7 +108,7 @@ const Typography = (
 ) => {
   const componentEl =
     component ?? variantMapping[variant as keyof typeof variantMapping] ?? "p";
-  const classList = typographyStyles({ variant, align });
+  const classList = typographyStyles({ variant, align, color });
   const extraClassNames = [] as string[];
   const TypographyComponent =
     typeof componentEl === "string"
