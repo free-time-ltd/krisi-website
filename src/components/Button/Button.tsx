@@ -7,7 +7,11 @@ const buttonStyles = cva(
   {
     variants: {
       variant: {
-        accent: ["bg-accent", "hover:bg-secondary"],
+        accent: [
+          "bg-accent",
+          "hover:bg-secondary",
+          "disabled:bg-green-100 disabled:text-slate-500",
+        ],
         primary: ["bg-blue-700", "hover:bg-blue-600"],
         secondary: ["bg-black", "hover:bg-gray-100"],
         danger: ["bg-red-600"],
@@ -24,11 +28,12 @@ const buttonStyles = cva(
   }
 );
 
-interface ButtonProps
+export interface ButtonProps
   extends VariantProps<typeof buttonStyles>,
     Omit<HTMLAttributes<HTMLButtonElement>, "className"> {
   type?: "button" | "submit" | "reset";
   rounded?: boolean;
+  disabled?: boolean;
   children?: ReactNode;
 }
 

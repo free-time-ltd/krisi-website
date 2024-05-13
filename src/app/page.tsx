@@ -61,7 +61,10 @@ export default async function Home() {
           </Typography>
         </a>
       </Hero>
-      <section className="KpHero-root mx-auto rounded py-16 px-8 xl:max-w-screen-xl">
+      <section
+        id="contact"
+        className="KpHero-root mx-auto rounded py-16 px-8 xl:max-w-screen-xl"
+      >
         <article>
           <Typography variant="h5" component="h1" align="center">
             Contact me
