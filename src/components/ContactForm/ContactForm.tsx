@@ -2,7 +2,6 @@
 
 import { FormEventHandler, InputHTMLAttributes, useState } from "react";
 import TextField from "../TextField";
-import Button from "../Button";
 import LoadingButton from "../Button/LoadingButton";
 
 type FormField = {
@@ -41,6 +40,8 @@ const FormFieldList = {
   },
 } as FormFieldRecord;
 
+type ApiErrors = Map<keyof typeof FormFieldList, Set<string>>;
+
 const defaultFormFields = Object.keys(FormFieldList);
 
 interface Props {
@@ -49,9 +50,30 @@ interface Props {
 
 const ContactForm = ({ fields = defaultFormFields }: Props) => {
   const [loading, setLoading] = useState(false);
+  const [formComplete, setFormComplete] = useState(false);
+  const [errors, setErrors] = useState<ApiErrors>(() => new Map());
+
   const formFields = Object.fromEntries(
     Object.entries(FormFieldList).filter(([key, _]) => fields?.includes(key))
   );
+
+  const hasErrors = errors.size > 0;
+
+  const addError = (field: keyof typeof FormFieldList, err: string) => {
+    setErrors((prev) => {
+      if (!prev.has(field)) {
+        prev.set(field, new Set());
+      }
+
+      prev.get(field)?.add(err);
+
+      return prev;
+    });
+  };
+
+  const resetErrors = () => {
+    setErrors(new Map());
+  };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -63,6 +85,8 @@ const ContactForm = ({ fields = defaultFormFields }: Props) => {
     if (address.length > 0 || website.length > 0) {
       return false;
     }
+
+    resetErrors();
 
     sendContactRequest(formData);
 
@@ -76,6 +100,9 @@ const ContactForm = ({ fields = defaultFormFields }: Props) => {
       const res = await fetch(
         `http://${process.env.NEXT_PUBLIC_API_HOSTNAME}/api/v1/contacts`,
         {
+          headers: {
+            Accept: "application/json",
+          },
           method: "POST",
           body: formData,
         }
@@ -84,12 +111,24 @@ const ContactForm = ({ fields = defaultFormFields }: Props) => {
       if (res.status !== 200) {
         throw new Error("Invalid server response", { cause: res });
       }
-
-      const json = await res.json();
-
-      console.log({ json });
+      // @todo add error to textfield
+      setFormComplete(true);
     } catch (e) {
       console.error("An error occurred: ", e);
+      if ("cause" in e) {
+        const json = await e.cause.json();
+        if ("error" in json) {
+          Object.entries(json.error).forEach(([key, value]) => {
+            if (Array.isArray(value)) {
+              value.forEach((str) => addError(key, str));
+            } else {
+              addError(key, value as string);
+            }
+          });
+        } else if ("message" in json && !("error" in json)) {
+          addError("message", json.message);
+        }
+      }
     } finally {
       setLoading(false);
     }
@@ -97,6 +136,8 @@ const ContactForm = ({ fields = defaultFormFields }: Props) => {
 
   return (
     <form method="post" action="" onSubmit={handleSubmit}>
+      {JSON.stringify(Object.fromEntries(errors))}
+      <p>well: {errors.size}</p>
       <section className="lg:max-w-xl mx-auto">
         <div className="grid grid-cols-2 gap-4">
           {Object.entries(formFields).map(([key, field]) => (
@@ -118,10 +159,11 @@ const ContactForm = ({ fields = defaultFormFields }: Props) => {
             <textarea
               name="message"
               className="bg-transparent p-2.5 border border-accent hover:border-secondary focus:rounded-none text-sm block w-full"
-              defaultValue="some textare content"
+              placeholder="Enter message..."
             />
           </div>
         </div>
+        {/* Honeypot fields START */}
         <div className="hidden" aria-hidden="true">
           <input
             type="text"
@@ -138,6 +180,7 @@ const ContactForm = ({ fields = defaultFormFields }: Props) => {
             placeholder="Enter address"
           />
         </div>
+        {/* Honeypot fields END */}
         <div className="text-center pt-2">
           <LoadingButton
             type="submit"

@@ -1,13 +1,38 @@
 "use client";
+import { cva, VariantProps } from "class-variance-authority";
 import { InputHTMLAttributes, Ref, forwardRef, useRef } from "react";
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+const textfieldStyles = cva(
+  "KpTextField-root bg-transparent p-2.5 border focus:rounded-none text-sm block w-full",
+  {
+    variants: {
+      color: {
+        accent: [
+          "border-accent hover:border-secondary",
+          "disabled:bg-green-100 disabled:text-slate-500",
+        ],
+        primary: ["border-blue-700", "hover:border-blue-600"],
+        secondary: ["border-black", "hover:border-gray-100"],
+        danger: ["border-red-600"],
+        error: ["border-red-600"],
+      },
+    },
+    defaultVariants: {
+      color: "accent",
+    },
+  }
+);
+
+interface Props
+  extends VariantProps<typeof textfieldStyles>,
+    Omit<InputHTMLAttributes<HTMLInputElement>, "color"> {
   type?: "text";
   label?: string;
+  error?: string;
 }
 
 const TextField = (
-  { type = "text", label, ...restProps }: Props,
+  { type = "text", color, label, ...restProps }: Props,
   ref: Ref<HTMLInputElement>
 ) => {
   const uuid = useRef(restProps.id ?? generateUniqueId());
@@ -24,7 +49,7 @@ const TextField = (
       )}
       <input
         type={type}
-        className={`bg-transparent p-2.5 border border-accent hover:border-secondary focus:rounded-none text-sm block w-full`}
+        className={textfieldStyles({ color })}
         {...restProps}
         {...(label && { id: uuid.current })}
         ref={ref}
