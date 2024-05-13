@@ -5,6 +5,7 @@ import Link, { NextLinkProps } from "@/components/Link";
 import TextField from "@/components/TextField";
 import Hero from "@/components/Hero";
 import ContactForm from "@/components/ContactForm";
+import KrisiTransparent from "@/assets/kk-transparent.webp";
 
 export default async function Home() {
   const { data: overviewData, error } = await getOverview();
@@ -74,6 +75,9 @@ export default async function Home() {
           </div>
         </article>
       </section>
+      <div className="flex justify-center">
+        <Image src={KrisiTransparent} alt="Kristina Kostova Photo" />
+      </div>
       <section className="flex min-h-screen flex-col items-start lg:items-center justify-between m-4 sm:p-24">
         <p>hahahaha</p>
         <div className="my-4 break-words whitespace-break-spaces">

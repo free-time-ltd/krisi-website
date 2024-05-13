@@ -136,8 +136,6 @@ const ContactForm = ({ fields = defaultFormFields }: Props) => {
 
   return (
     <form method="post" action="" onSubmit={handleSubmit}>
-      {JSON.stringify(Object.fromEntries(errors))}
-      <p>well: {errors.size}</p>
       <section className="lg:max-w-xl mx-auto">
         <div className="grid grid-cols-2 gap-4">
           {Object.entries(formFields).map(([key, field]) => (
