@@ -3,9 +3,10 @@ import getOverview from "@/services/OverviewService";
 import Typography, { TypographyProps } from "@/components/Typography";
 import Link, { NextLinkProps } from "@/components/Link";
 import TextField from "@/components/TextField";
-import Hero from "@/components/Hero";
+import Hero, { HeroImage } from "@/components/Hero";
 import ContactForm from "@/components/ContactForm";
 import KrisiTransparent from "@/assets/kk-transparent.webp";
+import OverviewImage from "@/services/OverviewService/OverviewImage";
 
 export default async function Home() {
   const { data: overviewData, error } = await getOverview();
@@ -13,6 +14,10 @@ export default async function Home() {
   if (!overviewData || error) {
     return <main>No gallery</main>;
   }
+
+  const sliderImages = overviewData.overview
+    .find((group) => group.slug === "slider")
+    ?.images.map(mapSliderImages);
 
   const TypographyTypes = [
     "h1",
@@ -40,6 +45,7 @@ export default async function Home() {
 
   return (
     <>
+      <HeroImage images={sliderImages}>lalalala</HeroImage>
       <Hero
         intro="Hello 👋, I'm"
         title="Kristina Kostova"
@@ -101,8 +107,8 @@ export default async function Home() {
             </Link>
           </p>
         </div>
-        <TextField label="Cool label" placeholder="placeholder string" />
-        <TextField label="Cool label" />
+        {/* <TextField label="Cool label" placeholder="placeholder string" /> */}
+        {/* <TextField label="Cool label" /> */}
         {overviewData.overview
           .filter((overview) => overview.slug !== "slider")
           .map((overview) => (
@@ -134,3 +140,22 @@ export default async function Home() {
     </>
   );
 }
+
+const mapSliderImages = (image: OverviewImage) => {
+  return {
+    id: image.id,
+    title: image.title,
+    mature: image.mature,
+    nudity: image.nudity,
+    violence: image.violence,
+    previewUrl: image.previewUrl,
+    url: image.url,
+    thumbnails: image.thumbnails.reduce(
+      (acc, thumb) => ({
+        ...acc,
+        [thumb.type]: { ...thumb },
+      }),
+      {}
+    ),
+  };
+};
