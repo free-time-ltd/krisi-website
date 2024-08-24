@@ -2,7 +2,6 @@ import Image from "next/image";
 import getOverview from "@/services/OverviewService";
 import Typography, { TypographyProps } from "@/components/Typography";
 import Link, { NextLinkProps } from "@/components/Link";
-import TextField from "@/components/TextField";
 import Hero, { HeroImage } from "@/components/Hero";
 import ContactForm from "@/components/ContactForm";
 import KrisiTransparent from "@/assets/kk-transparent.webp";
@@ -86,13 +85,13 @@ export default async function Home() {
       </div>
       <section className="flex min-h-screen flex-col items-start lg:items-center justify-between m-4 sm:p-24">
         <p>hahahaha</p>
-        <div className="my-4 break-words whitespace-break-spaces">
+        {/* <div className="my-4 break-words whitespace-break-spaces">
           {TypographyTypes.map((type) => (
             <Typography variant={type} key={type}>
               Typography type {type}
             </Typography>
           ))}
-        </div>
+        </div> */}
         <div className="my-4 sm:w-96">
           {linkColors.map((link) => (
             <p key={link}>
