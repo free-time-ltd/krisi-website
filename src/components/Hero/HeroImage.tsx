@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import type { ImageThumbnail } from "@/graphql/types";
+import Autoplay from "embla-carousel-autoplay";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import ResponsiveImage from "./ResponsiveImage";
-import Flexbox from "../Flexbox";
 
 export interface SimpleImage {
   id: string;
@@ -20,67 +25,37 @@ const HeroImage = ({
   children,
   images = [],
 }: {
-  children: ReactNode;
+  children?: ReactNode;
   images?: SimpleImage[];
 }) => {
-  const [currentImage, setCurrentImage] = useState(0);
-
-  useEffect(() => {
-    document.addEventListener("keyup", handleKeyPress);
-
-    return () => document.removeEventListener("keyup", handleKeyPress);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleKeyPress = (e: KeyboardEvent) => {
-    switch (e.key) {
-      case "ArrowUp":
-        handleResize();
-        break;
-      case "ArrowLeft":
-        handlePrevImage();
-        break;
-      case "ArrowRight":
-        handleNextImage();
-        break;
-    }
-  };
-
-  const handlePrevImage = () => {
-    setCurrentImage((prev) => Math.max(0, prev - 1));
-  };
-
-  const handleNextImage = () => {
-    setCurrentImage((prev) => Math.min(images.length - 1, prev + 1));
-  };
-
-  const handleResize = () => {
-    window.dispatchEvent(new Event("resize"));
-  };
-
+  console.log({ images });
   return (
-    <div className="hero-image-container carousel w-full overflow-hidden relative">
-      <div
-        className="carousel-inner flex w-full transform ease-in-out duration-500"
-        style={{
-          transform: `translateX(-${currentImage * 100}%)`,
+    <div className="heroimage-container relative">
+      <Carousel
+        className="w-full"
+        opts={{
+          align: "start",
+          loop: true,
         }}
+        plugins={[
+          Autoplay({
+            delay: 2500,
+          }),
+        ]}
       >
-        {images.map((image, index) => (
-          <div className="carousel-item min-w-full h-screen" key={index}>
-            <ResponsiveImage image={image} />
-          </div>
-        ))}
-      </div>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="hero-container">
-          {children}
-          <Flexbox flexDirection="column">
-            <button onClick={handlePrevImage}>Prev image</button>
-            <button onClick={handleNextImage}>Next image</button>
-          </Flexbox>
+        <CarouselContent>
+          {images.map((image, index) => (
+            <CarouselItem key={index} className="h-screen overflow-hidden">
+              <ResponsiveImage image={image} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+      {children && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="child-container">{children}</div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

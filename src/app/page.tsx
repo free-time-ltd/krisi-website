@@ -44,14 +44,14 @@ export default async function Home() {
 
   return (
     <>
-      <HeroImage images={sliderImages}>lalalala</HeroImage>
+      <HeroImage images={sliderImages} />
       <Hero
         intro="Hello 👋, I'm"
         title="Kristina Kostova"
         subtitle="Artist specializing in painting and illustration"
         outro={`${
           new Date().getFullYear() - 2012
-        } Years of experience creating custom artworks`}
+        } Years of professional experience creating custom artworks`}
       >
         <a
           href="#contact"
