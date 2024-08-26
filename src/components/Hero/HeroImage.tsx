@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import type { ImageThumbnail } from "@/graphql/types";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -9,6 +9,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import ResponsiveImage from "./ResponsiveImage";
+import { ScrollDownButton } from "../Button";
 
 export interface SimpleImage {
   id: string;
@@ -28,9 +29,12 @@ const HeroImage = ({
   children?: ReactNode;
   images?: SimpleImage[];
 }) => {
-  console.log({ images });
+  const heroImageRef = useRef<HTMLDivElement>(null);
+
+  const handleSliderClick = () => {};
+
   return (
-    <div className="heroimage-container relative">
+    <div className="heroimage-container relative" ref={heroImageRef}>
       <Carousel
         className="w-full"
         opts={{
@@ -56,6 +60,9 @@ const HeroImage = ({
           <div className="child-container">{children}</div>
         </div>
       )}
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-24">
+        <ScrollDownButton onClick={handleSliderClick} title="Scroll Down" />
+      </div>
     </div>
   );
 };
