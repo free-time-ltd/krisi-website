@@ -2,10 +2,10 @@ import Image from "next/image";
 import getOverview from "@/services/OverviewService";
 import Typography, { TypographyProps } from "@/components/Typography";
 import Link, { NextLinkProps } from "@/components/Link";
-import TextField from "@/components/TextField";
-import Hero from "@/components/Hero";
+import Hero, { HeroImage } from "@/components/Hero";
 import ContactForm from "@/components/ContactForm";
 import KrisiTransparent from "@/assets/kk-transparent.webp";
+import OverviewImage from "@/services/OverviewService/OverviewImage";
 
 export default async function Home() {
   const { data: overviewData, error } = await getOverview();
@@ -13,6 +13,10 @@ export default async function Home() {
   if (!overviewData || error) {
     return <main>No gallery</main>;
   }
+
+  const sliderImages = overviewData.overview
+    .find((group) => group.slug === "slider")
+    ?.images.map(mapSliderImages);
 
   const TypographyTypes = [
     "h1",
@@ -40,13 +44,14 @@ export default async function Home() {
 
   return (
     <>
+      <HeroImage images={sliderImages} />
       <Hero
         intro="Hello 👋, I'm"
         title="Kristina Kostova"
         subtitle="Artist specializing in painting and illustration"
         outro={`${
           new Date().getFullYear() - 2012
-        } Years of experience creating custom artworks`}
+        } Years of professional experience creating custom artworks`}
       >
         <a
           href="#contact"
@@ -80,13 +85,13 @@ export default async function Home() {
       </div>
       <section className="flex min-h-screen flex-col items-start lg:items-center justify-between m-4 sm:p-24">
         <p>hahahaha</p>
-        <div className="my-4 break-words whitespace-break-spaces">
+        {/* <div className="my-4 break-words whitespace-break-spaces">
           {TypographyTypes.map((type) => (
             <Typography variant={type} key={type}>
               Typography type {type}
             </Typography>
           ))}
-        </div>
+        </div> */}
         <div className="my-4 sm:w-96">
           {linkColors.map((link) => (
             <p key={link}>
@@ -101,8 +106,8 @@ export default async function Home() {
             </Link>
           </p>
         </div>
-        <TextField label="Cool label" placeholder="placeholder string" />
-        <TextField label="Cool label" />
+        {/* <TextField label="Cool label" placeholder="placeholder string" /> */}
+        {/* <TextField label="Cool label" /> */}
         {overviewData.overview
           .filter((overview) => overview.slug !== "slider")
           .map((overview) => (
@@ -134,3 +139,22 @@ export default async function Home() {
     </>
   );
 }
+
+const mapSliderImages = (image: OverviewImage) => {
+  return {
+    id: image.id,
+    title: image.title,
+    mature: image.mature,
+    nudity: image.nudity,
+    violence: image.violence,
+    previewUrl: image.previewUrl,
+    url: image.url,
+    thumbnails: image.thumbnails.reduce(
+      (acc, thumb) => ({
+        ...acc,
+        [thumb.type]: { ...thumb },
+      }),
+      {}
+    ),
+  };
+};

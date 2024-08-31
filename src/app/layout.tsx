@@ -28,9 +28,9 @@ export default function RootLayout({
       lang="en"
       className={`${Inter.variable} ${CormorantGaramondRegular.variable} scroll-smooth`}
     >
-      <body className="sm:pt-5">
+      <body>
         <Header />
-        <main className="app-main overflow-hidden">{children}</main>
+        <main className="app-main">{children}</main>
         <Footer />
       </body>
     </html>

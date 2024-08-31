@@ -19,6 +19,12 @@ const flexboxStyles = cva("KpFlexbox-root flex", {
       baseline: "items-baseline",
       stretch: "items-stretch",
     },
+    flexDirection: {
+      row: "flex-row",
+      column: "flex-col",
+      "row-reverse": "flex-row-reverse",
+      "col-reverse": "flex-col-reverse",
+    },
     gap: {
       0: "gap-0",
       1: "gap-1",
@@ -31,6 +37,7 @@ const flexboxStyles = cva("KpFlexbox-root flex", {
   defaultVariants: {
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
     gap: 0,
   },
 });
@@ -42,13 +49,25 @@ interface FlexboxProps
 }
 
 const Flexbox = (
-  { children, justifyContent, alignItems, gap, ...restProps }: FlexboxProps,
+  {
+    children,
+    justifyContent,
+    alignItems,
+    flexDirection,
+    gap,
+    ...restProps
+  }: FlexboxProps,
   ref: Ref<HTMLDivElement>
 ) => {
   return (
     <div
       {...restProps}
-      className={flexboxStyles({ justifyContent, alignItems, gap })}
+      className={flexboxStyles({
+        justifyContent,
+        alignItems,
+        gap,
+        flexDirection,
+      })}
       ref={ref}
     >
       {children}
