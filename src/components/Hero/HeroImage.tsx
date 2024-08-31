@@ -31,7 +31,16 @@ const HeroImage = ({
 }) => {
   const heroImageRef = useRef<HTMLDivElement>(null);
 
-  const handleSliderClick = () => {};
+  const handleSliderClick = () => {
+    if (!heroImageRef.current) return;
+
+    const clientRect = heroImageRef.current.getBoundingClientRect();
+
+    window.scrollTo({
+      top: clientRect.bottom,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <div className="heroimage-container relative" ref={heroImageRef}>

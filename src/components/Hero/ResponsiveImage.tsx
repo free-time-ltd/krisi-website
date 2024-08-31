@@ -41,6 +41,7 @@ const ResponsiveImage: FC<Props> = ({ image }) => {
           objectFit: "cover",
           objectPosition: "center",
         }}
+        alt={image.title}
       />
     </picture>
   );
