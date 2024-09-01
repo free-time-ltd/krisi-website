@@ -68,7 +68,7 @@ export default async function Home() {
         </a>
       </Hero>
       <section
-        id="contact"
+        id="contacts"
         className="KpHero-root mx-auto rounded py-16 px-8 xl:max-w-screen-xl"
       >
         <article>

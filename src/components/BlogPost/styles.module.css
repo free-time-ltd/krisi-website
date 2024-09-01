@@ -1,0 +1,16 @@
+.KpBlogPost-root {
+    @apply block px-5;
+
+    > h2 {
+        @apply font-light text-6xl leading-tighter tracking-tight font-title;
+        border-bottom: 2px solid #00B894;
+    }
+
+    > p {
+        @apply my-4;
+    }
+
+    > ul {
+        @apply block list-disc my-4 mx-0 pl-10;
+    }
+}

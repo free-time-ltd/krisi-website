@@ -65,8 +65,6 @@ const typographyStyles = cva("KpTypograhy-root", {
   },
   defaultVariants: {
     variant: "body1",
-    align: "left",
-    color: "inherit",
   },
 });
 
