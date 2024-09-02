@@ -18,6 +18,12 @@ const BlogPost = ({ post }: Props) => (
               </a>
             );
           }
+        } else if (domNode.name === "h1") {
+          return (
+            <h2 {...domNode.cloneNode[Symbol].attribs}>
+              {domToReact(domNode.children)}
+            </h2>
+          );
         }
       },
     })}
