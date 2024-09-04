@@ -5,6 +5,7 @@ import type { RouteList } from "./NavMenu";
 import Hamburger from "./Hamburger";
 import NavItem from "./NavItem";
 import { useEffect, useState, useTransition } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const Backdrop = ({ onClick }: { onClick?: () => void }) => {
   return (
@@ -16,25 +17,21 @@ const Backdrop = ({ onClick }: { onClick?: () => void }) => {
 };
 
 const NavMenuMobile = ({ routes }: { routes: RouteList }) => {
-  const [isPending, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-
-    return () => document.body.classList.remove("overflow-hidden");
-  }, [isOpen]);
-
-  const extraClasses =
-    isOpen && !isPending ? "translate-x-0" : "translate-x-full";
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const toggleMenu = () => {
     startTransition(() => setIsOpen((prev) => !prev));
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsOpen(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname, searchParams]);
 
   return (
     <div className="block sm:hidden">
@@ -43,15 +40,15 @@ const NavMenuMobile = ({ routes }: { routes: RouteList }) => {
       </div>
       {isOpen &&
         createPortal(
-          <div className="header-menu">
+          <div className="header-menu overflow-hidden">
             <Backdrop onClick={() => toggleMenu()} />
             <div
-              className={`menu fixed top-0 right-0 h-screen z-50 w-9/12 bg-primary flex flex-col px-5 py-12 transition ease-in-out duration-150 ${extraClasses}`}
+              className={`menu fixed top-0 -right-full animate-slide-in h-screen z-50 w-9/12 bg-primary flex flex-col px-5 py-12 transition`}
             >
-              <div className="close-btn absolute top-5 right-4">
+              <div className="close-btn absolute top-5 left-0">
                 <Hamburger toggled={isOpen} onClick={toggleMenu} />
               </div>
-              <ul className="grid gap-4">
+              <ul className="grid gap-4 py-4">
                 {routes.map(({ href, title }) => (
                   <NavItem href={href} key={href}>
                     {title}

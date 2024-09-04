@@ -19,7 +19,7 @@ bun dev
 - [x] Get on GitHub
 - [x] Come up with a gallery plugin
 - [x] Finish contacts section with antibot protection
-- [ ] Fix mobile NavMenuMobile to slide, not just instantly appear
-- [ ] Add About page
+- [x] Fix mobile NavMenuMobile to slide, not just instantly appear
+- [x] Add About page
 - [ ] Add section for book covers
 - [ ] Update footer with proper data
